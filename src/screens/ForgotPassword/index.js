@@ -124,7 +124,8 @@ class ForgotPasswordForm extends Component {
           <Footer
             style={{
               paddingLeft: 20,
-              paddingRight: 20
+              paddingRight: 20,
+              backgroundColor: "transparent"
             }}
           >
             <Button transparent onPress={() => this.props.navigation.goBack()}>

@@ -21,7 +21,10 @@ import {
   Body,
   Right,
   View,
-  Spinner
+  Spinner,
+  Card,
+  CardItem,
+  Thumbnail
 } from "native-base";
 
 import { Grid, Col } from "react-native-easy-grid";
@@ -40,31 +43,40 @@ class Home extends Component {
   }
   _renderItem = ({ item }) => {
     return (
-      <TouchableOpacity
-        style={{ flexDirection: "row" }}
-        onPress={() => this.props.navigation.navigate("Story")}
-      >
-        <View style={styles.newsContent}>
-          <Text numberOfLines={2} style={styles.newsHeader}>
-            {item.headline}
-          </Text>
-          <Grid style={styles.swiperContentBox}>
-            <Col style={{ flexDirection: "row" }}>
-              <Text style={styles.newsLink}>{item.link}</Text>
-              <Icon name="ios-time-outline" style={styles.timeIcon} />
-              <Text style={styles.newsLink}>{item.time}</Text>
-            </Col>
-            <Col>
-              <TouchableOpacity
-                style={styles.newsTypeView}
-                onPress={() => this.props.navigation.navigate("Channel")}
-              >
-                <Text style={styles.newsTypeText}>{item.category}</Text>
-              </TouchableOpacity>
-            </Col>
-          </Grid>
-        </View>
-      </TouchableOpacity>
+      <Card>
+        <CardItem>
+          <Left>
+            <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
+            <Body>
+              <Text>Maxim Martynenko</Text>
+              <Text note>19 days ago | public</Text>
+            </Body>
+          </Left>
+        </CardItem>
+        <CardItem cardBody>
+          <Image source={require("../../../assets/live_user_tsm_daequan-400x225.jpg")} style={{ height: 200, width: null, flex: 1 }} />
+        </CardItem>
+        <CardItem>
+          <Body>
+            <Text>League of Legends</Text>
+          </Body>
+        </CardItem>
+        <CardItem>
+          <Left>
+            <TouchableOpacity onPress={() => { }}>
+              <Icon name="ios-heart-empty" style={styles.iconHeart} />
+            </TouchableOpacity>
+            <Text> 4 </Text>
+
+          </Left>
+          <Right style={{flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
+            <TouchableOpacity onPress={() => { }}>
+              <Icon name="ios-chatboxes" style={styles.iconHeart} />
+            </TouchableOpacity>
+            <Text style={{marginLeft: 10}}> 6 </Text>
+          </Right>
+        </CardItem>
+      </Card>
     );
   };
   render() {
@@ -91,7 +103,19 @@ class Home extends Component {
             showsVerticalScrollIndicator={false}
             style={{ backgroundColor: "#fff" }}
           >
-            
+
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('CreatePost')}>
+              <Card>
+                <CardItem>
+                  <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
+                  <Text note style={{ marginLeft: 20 }}>What's new with you?</Text>
+                  <Right>
+                    <Icon name="ios-camera" style={styles.iconCamera} />
+                  </Right>
+                </CardItem>
+              </Card>
+            </TouchableOpacity>
+
             <FlatList
               data={this.props.items}
               renderItem={this._renderItem}
@@ -104,18 +128,4 @@ class Home extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    fetchData: url => dispatch(itemsFetchData(url))
-  };
-}
-
-const mapStateToProps = state => ({
-  items: state.homeReducer.items,
-  hasErrored: state.homeReducer.hasErrored,
-  isLoading: state.homeReducer.isLoading
-});
-export default connect(
-  mapStateToProps,
-  bindAction
-)(Home);
+export default Home;

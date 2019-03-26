@@ -144,5 +144,11 @@ export default {
     height: 25,
     width: 95,
     resizeMode: "contain"
+  },
+  iconHeart: {
+    fontSize: 25
+  },
+  iconCamera: {
+    fontSize: 35
   }
 };

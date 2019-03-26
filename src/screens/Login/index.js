@@ -97,16 +97,7 @@ class LoginForm extends Component {
       });
     }
   }
-  skip() {
-    this.props.navigation.navigate("Drawer");
-    return this.props.navigation.dispatch(
-      StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: "Drawer" })]
-      })
-    );
-  }
-
+  
   render() {
     const navigation = this.props.navigation;
     return (

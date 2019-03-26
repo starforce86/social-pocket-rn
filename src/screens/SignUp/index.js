@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { ImageBackground, StatusBar } from "react-native";
+import { connect } from 'react-redux'
 import {
   Container,
   Content,
@@ -15,7 +16,7 @@ import {
   Right,
   Footer
 } from "native-base";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
@@ -60,7 +61,7 @@ class SignUpForm extends Component {
             style={styles.input}
             placeholder={
               input.name === "username"
-                ? "Username"
+                ? "Full Name"
                 : input.name === "email"
                 ? "Email"
                 : "Password"
@@ -88,8 +89,13 @@ class SignUpForm extends Component {
     );
   }
   signUp() {
+    const { register, username, email, password } = this.props
     if (this.props.valid) {
-      this.props.navigation.goBack();
+      register({
+        fullName: username,
+        email:email,
+        password: password
+      });
     } else {
       Toast.show({
         text: "All the fields are compulsory!",
@@ -136,35 +142,25 @@ class SignUpForm extends Component {
 
               <Button
                 rounded
-                bordered
+                primary
                 block
                 onPress={() => this.signUp()}
                 style={styles.signupBtn}
               >
-                <Text style={{ color: "#FFF" }}>Continue</Text>
+                <Text style={{ color: "#FFF" }}>Sign Up</Text>
               </Button>
             </View>
           </Content>
           <Footer
             style={{
               paddingLeft: 20,
-              paddingRight: 20
+              paddingRight: 20,
+              backgroundColor: "transparent"
             }}
           >
-            <Left style={{ flex: 2 }}>
-              <Button small transparent>
-                <Text style={styles.helpBtns}>Terms & Conditions</Text>
-              </Button>
-            </Left>
-            <Right style={{ flex: 1 }}>
-              <Button
-                small
-                transparent
-                onPress={() => this.props.navigation.goBack()}
-              >
-                <Text style={styles.helpBtns}>SignIn</Text>
-              </Button>
-            </Right>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Text style={styles.helpBtns}>Back To Login</Text>
+            </Button>
           </Footer>
         </ImageBackground>
       </Container>
@@ -175,4 +171,23 @@ class SignUpForm extends Component {
 const SignUp = reduxForm({
   form: "signup"
 })(SignUpForm);
-export default SignUp;
+
+const selector = formValueSelector('signup');
+SignUp = connect(state => {
+  const username = selector(state, 'username');
+  const email = selector(state, 'email');
+  const password = selector(state, 'password');
+  return {
+    username,
+    email,
+    password
+  }
+})(SignUp)
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    register: (data) => dispatch(authorizeActions.dbSignup(data))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SignUp);

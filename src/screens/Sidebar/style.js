@@ -2,7 +2,8 @@ const React = require("react-native");
 
 const { Platform } = React;
 
-const primary = require("../../../native-base-theme/variables/commonColor").brandPrimary;
+// const primary = require("../../../native-base-theme/variables/commonColor").brandPrimary;
+const primary = "#01cca1";
 
 export default {
   links: {
@@ -13,7 +14,8 @@ export default {
     borderBottomColor: "transparent"
   },
   linkText: {
-    paddingLeft: 15
+    paddingLeft: 15,
+    color: "#fff"
   },
   logoutContainer: {
     padding: 30,

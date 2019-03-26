@@ -67,8 +67,6 @@ export default {
   signupBtn: {
     height: 50,
     marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#ddd"
   },
   otherLinkText: {
     alignSelf: "center",

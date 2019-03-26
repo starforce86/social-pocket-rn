@@ -37,7 +37,7 @@ class SideBar extends Component {
               iconLeft
               style={styles.links}
             >
-              <Icon name="ios-home" />
+              <Icon name="ios-home" style={{ color: "#fff" }} />
               <Text style={styles.linkText}>HOME</Text>
             </ListItem>
             <ListItem
@@ -48,7 +48,7 @@ class SideBar extends Component {
               iconLeft
               style={styles.links}
             >
-              <Icon name="ios-person" />
+              <Icon name="ios-person" style={{ color: "#fff" }} />
               <Text style={styles.linkText}> PROFILE</Text>
             </ListItem>
             <ListItem
@@ -59,7 +59,7 @@ class SideBar extends Component {
               iconLeft
               style={styles.links}
             >
-              <Icon name="ios-people" />
+              <Icon name="ios-people" style={{ color: "#fff" }} />
               <Text style={styles.linkText}>FRIEND</Text>
             </ListItem>
             <ListItem
@@ -70,7 +70,7 @@ class SideBar extends Component {
               iconLeft
               style={styles.links}
             >
-              <Icon name="ios-keypad" />
+              <Icon name="ios-keypad" style={{ color: "#fff" }} />
               <Text style={styles.linkText}>CHANGE PASSWORD</Text>
             </ListItem>
             <ListItem
@@ -81,7 +81,7 @@ class SideBar extends Component {
               iconLeft
               style={styles.links}
             >
-              <Icon name="ios-chatboxes" />
+              <Icon name="ios-chatboxes" style={{ color: "#fff" }} />
               <Text style={styles.linkText}>FEEDBACK</Text>
             </ListItem>
           </Content>
