@@ -1,6 +1,7 @@
 import React from "react";
-import { Provider } from "react-redux";
-import { StackNavigator, DrawerNavigator } from "react-navigation";
+import { Provider, connect } from "react-redux";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
+import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import { StyleProvider, Root } from "native-base";
 
 import store from './config/store';
@@ -14,7 +15,7 @@ import Sidebar from "./screens/Sidebar";
 import Feedback from "./screens/Feedback/";
 import Profile from "./screens/Profile/";
 
-const Drawer = DrawerNavigator(
+const Drawer = createDrawerNavigator(
   {
     Home: { screen: Home },
     Feedback: { screen: Feedback },
@@ -26,7 +27,7 @@ const Drawer = DrawerNavigator(
   }
 );
 
-const App = StackNavigator(
+export const AppNavigator = createStackNavigator(
   {
     Login: { screen: Login },
     SignUp: { screen: SignUp },
@@ -40,11 +41,23 @@ const App = StackNavigator(
   }
 );
 
+export const navMiddleware = createReactNavigationReduxMiddleware(
+  "root",
+  state => state.nav,
+);
+
+const App = reduxifyNavigator(AppNavigator, "root");
+const mapStateToProps = state => ({
+  state: state.nav
+});
+
+const AppWithNavigationState = connect(mapStateToProps)(App);
+
 export default () =>
   <StyleProvider style={getTheme(variables)}>
     <Provider store={store}>
       <Root>
-        <App />
+        <AppWithNavigationState />
       </Root>
     </Provider>
   </StyleProvider>;

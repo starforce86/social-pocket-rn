@@ -14,14 +14,14 @@ import {globalReducer} from './globalReducer'
 // import {userReducer} from './userReducer'
 // import {notifyReducer} from './notifyReducer'
 // import {circleReducer} from './circleReducer'
-// import {navReducer} from './navReducer'
+import {navReducer} from './navReducer'
 import homeReducer from "../screens/Home/reducer"
 
 
 
 export default combineReducers({
   form: formReducer,
-  // nav: navReducer,
+  nav: navReducer,
   // imageGallery: imageGalleryReducer,
   // imageUploader: imageUploaderReducer,
   // post: postReducer,
