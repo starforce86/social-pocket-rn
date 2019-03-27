@@ -2,6 +2,7 @@
 import { firebaseRef, firebaseAuth } from '../firebase'
 import moment from 'moment'
 import { StackActions, NavigationActions } from 'react-navigation'
+import { Toast } from 'native-base'
 
 
 // - Import action types
@@ -24,13 +25,19 @@ export var dbLogin = (email, password) => {
       dispatch(globalActions.showLoading())
       
     return firebaseAuth().signInWithEmailAndPassword(email, password).then((result) => {
-      dispatch(globalActions.showNotificationSuccess())
+      // dispatch(globalActions.showNotificationSuccess())
+      Toast.show({
+        text: "Your request has processed successfuly",
+        duration: 2500,
+        position: "top",
+        textStyle: { textAlign: "center" }
+      });
       dispatch(login(result.uid))
 
       const resetAction = StackActions.reset({
         index: 0,
         actions: [
-          NavigationActions.navigate({ routeName: 'Tabs' })
+          NavigationActions.navigate({ routeName: 'Drawer' })
         ]
       })
       dispatch(resetAction)
@@ -43,7 +50,13 @@ export var dbLogin = (email, password) => {
       // Hide loading on error
       dispatch(globalActions.hideLoading())
 
-      dispatch(globalActions.showErrorMessageWithTimeout(error.code))
+      // dispatch(globalActions.showErrorMessageWithTimeout(error.code))
+      Toast.show({
+        text: error.code,
+        duration: 2500,
+        position: "top",
+        textStyle: { textAlign: "center" }
+      });
 
     })
   }
@@ -64,7 +77,15 @@ export var dbLogout = () => {
       })
       dispatch(resetAction)
 
-    }, (error) => dispatch(globalActions.showErrorMessageWithTimeout(error.code)))
+    }, (error) => { 
+      // dispatch(globalActions.showErrorMessageWithTimeout(error.code)) 
+      Toast.show({
+        text: error.code,
+        duration: 2500,
+        position: "top",
+        textStyle: { textAlign: "center" }
+      });
+    })
   }
 
 }
@@ -75,16 +96,36 @@ export var dbLogout = () => {
  */
 export var dbSignup = (user) => {
   return (dispatch, getState) => {
-    dispatch(globalActions.showNotificationRequest())
+    // dispatch(globalActions.showNotificationRequest())
+    Toast.show({
+      text: "Request has been sent",
+      duration: 2500,
+      position: "top",
+      textStyle: { textAlign: "center" }
+    });
     return firebaseAuth().createUserWithEmailAndPassword(user.email, user.password).then((signupResult) => {
       firebaseRef.child(`users/${signupResult.uid}/info`).set({
         ...user,
         avatar: 'noImage'
       }).then((result) => {
 
-        dispatch(globalActions.showNotificationSuccess())
+        // dispatch(globalActions.showNotificationSuccess())
+        Toast.show({
+          text: "Your request has processed successfuly",
+          duration: 2500,
+          position: "top",
+          textStyle: { textAlign: "center" }
+        });
 
-      }, (error) => dispatch(globalActions.showErrorMessageWithTimeout(error.code)))
+      }, (error) => { 
+        // dispatch(globalActions.showErrorMessageWithTimeout(error.code)) 
+        Toast.show({
+          text: error.code,
+          duration: 2500,
+          position: "top",
+          textStyle: { textAlign: "center" }
+        });
+      })
 
       dispatch(signup({
         uid: signupResult.uid,
@@ -93,11 +134,19 @@ export var dbSignup = (user) => {
       const resetAction = StackActions.reset({
         index: 0,
         actions: [
-          NavigationActions.navigate({ routeName: 'Tabs' })
+          NavigationActions.navigate({ routeName: 'Drawer' })
         ]
       })
       dispatch(resetAction)
-    }, (error) => dispatch(globalActions.showErrorMessageWithTimeout(error.code)))
+    }, (error) => { 
+      // dispatch(globalActions.showErrorMessageWithTimeout(error.code)) 
+      Toast.show({
+        text: error.code,
+        duration: 2500,
+        position: "top",
+        textStyle: { textAlign: "center" }
+      });
+    })
   }
 
 }

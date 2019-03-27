@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Image, ImageBackground, Platform, StatusBar } from "react-native";
+import { connect } from 'react-redux';
 import {
   Container,
   Content,
@@ -14,10 +15,11 @@ import {
   Right,
   Toast
 } from "native-base";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 
 import styles from "./styles";
 // import commonColor from "../../theme/variables/commonColor";
+import * as authorizeActions from '../../actions/authorizeActions';
 
 const bg = require("../../../assets/bg.png");
 const logo = require("../../../assets/logo.png");
@@ -67,27 +69,71 @@ class LoginForm extends Component {
               name="close"
             />
           ) : (
-            <Text />
-          )}
+              <Text />
+            )}
         </Item>
         {touched && error ? (
           <Text style={styles.formErrorText1}>{error}</Text>
         ) : (
-          <Text style={styles.formErrorText2}>error here</Text>
-        )}
+            <Text style={styles.formErrorText2}>error here</Text>
+          )}
       </View>
     );
   }
 
+  renderButton() {
+    const { loading } = this.props;
+    if (loading) {
+      return (
+        <Button
+          rounded
+          primary
+          block
+          large
+          style={styles.loginBtn}
+          disabled
+        >
+          <Text
+            style={
+              Platform.OS === "android"
+                ? { fontSize: 16, textAlign: "center" }
+                : { fontSize: 16, fontWeight: "900" }
+            }
+          >
+            Loading...
+          </Text>
+        </Button>
+      )
+    }
+    else {
+      return (
+        <Button
+          rounded
+          primary
+          block
+          large
+          style={styles.loginBtn}
+          onPress={() => this.login()}
+        >
+          <Text
+            style={
+              Platform.OS === "android"
+                ? { fontSize: 16, textAlign: "center" }
+                : { fontSize: 16, fontWeight: "900" }
+            }
+          >
+            Log In
+          </Text>
+        </Button>
+      )
+    }
+  }
+
   login() {
+    const { login, email, password } = this.props;
+
     if (this.props.valid) {
-      this.props.navigation.navigate("Drawer");
-      return this.props.navigation.dispatch(
-        StackActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: "Drawer" })]
-        })
-      );
+      login(email, password)
     } else {
       Toast.show({
         text: "Enter Valid Username & password!",
@@ -97,7 +143,7 @@ class LoginForm extends Component {
       });
     }
   }
-  
+
   render() {
     const navigation = this.props.navigation;
     return (
@@ -123,24 +169,7 @@ class LoginForm extends Component {
                   validate={[alphaNumeric, minLength8, maxLength15, required]}
                 />
 
-                <Button
-                  rounded
-                  primary
-                  block
-                  large
-                  style={styles.loginBtn}
-                  onPress={() => this.login()}
-                >
-                  <Text
-                    style={
-                      Platform.OS === "android"
-                        ? { fontSize: 16, textAlign: "center" }
-                        : { fontSize: 16, fontWeight: "900" }
-                    }
-                  >
-                    Log In
-                  </Text>
-                </Button>
+                {this.renderButton()}
 
                 <View style={styles.otherLinksContainer}>
                   <Left>
@@ -172,7 +201,30 @@ class LoginForm extends Component {
     );
   }
 }
+
 const Login = reduxForm({
   form: "login"
 })(LoginForm);
-export default Login;
+
+const selector = formValueSelector('login');
+Login = connect(state => {
+  const email = selector(state, 'email');
+  const password = selector(state, 'password');
+  return {
+    email,
+    password
+  }
+})(Login)
+
+const mapStateToProps = ({ global }) => {
+  const { loading } = global
+  return { loading }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    login: (email, password) => dispatch(authorizeActions.dbLogin(email, password))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

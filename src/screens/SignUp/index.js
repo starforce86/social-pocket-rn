@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { ImageBackground, StatusBar } from "react-native";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import {
   Container,
   Content,
@@ -20,6 +20,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
+import * as authorizeActions from '../../actions/authorizeActions';
 
 const required = value => (value ? undefined : "Required");
 const maxLength = max => value =>
