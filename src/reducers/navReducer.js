@@ -1,8 +1,4 @@
-import { NavigationActions } from 'react-navigation'
-import {
-  StatusBar
-} from 'react-native'
-import { AppNavigator } from '../App'
+import { AppNavigator } from '../routes/AppNavigator'
 import { createNavigationReducer } from 'react-navigation-redux-helpers';
 
 

@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from "react";
 import { ImageBackground, TouchableOpacity } from "react-native";
-
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
@@ -15,10 +14,12 @@ import {
 import { Grid, Col } from "react-native-easy-grid";
 
 import styles from "./style";
+
 const resetAction = StackActions.reset({
   index: 0,
   actions: [NavigationActions.navigate({ routeName: "Login" })]
 });
+
 class SideBar extends Component {
   render() {
     const navigation = this.props.navigation;

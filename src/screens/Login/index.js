@@ -202,7 +202,7 @@ class LoginForm extends Component {
   }
 }
 
-const Login = reduxForm({
+let Login = reduxForm({
   form: "login"
 })(LoginForm);
 

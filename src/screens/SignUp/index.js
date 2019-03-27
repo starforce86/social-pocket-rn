@@ -169,7 +169,7 @@ class SignUpForm extends Component {
   }
 }
 
-const SignUp = reduxForm({
+let SignUp = reduxForm({
   form: "signup"
 })(SignUpForm);
 
