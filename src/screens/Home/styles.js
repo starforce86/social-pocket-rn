@@ -147,8 +147,6 @@ export default {
   },
   iconHeart: {
     fontSize: 25
-  },
-  iconCamera: {
-    fontSize: 35
   }
+  
 };

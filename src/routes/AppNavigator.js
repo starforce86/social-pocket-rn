@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';

@@ -1,86 +1,92 @@
-// @flow
+// - Import react components
 import React, { Component } from "react";
 import {
-  Platform,
   Image,
-  ImageBackground,
-  TouchableOpacity,
   Dimensions,
-  FlatList,
-  View as RNView
 } from "react-native";
 import { connect } from "react-redux";
+import _ from 'lodash';
 import {
   Container,
   Header,
   Content,
-  Text,
   Button,
   Icon,
   Left,
   Body,
   Right,
-  View,
   Spinner,
-  Card,
-  CardItem,
-  Thumbnail
 } from "native-base";
 
-import { Grid, Col } from "react-native-easy-grid";
+// - Import Actions
+import * as postActions from './../../actions/postActions'
+import * as userActions from './../../actions/userActions'
+import * as commentActions from './../../actions/commentActions'
+import * as voteActions from './../../actions/voteActions'
+import * as notifyActions from './../../actions/notifyActions'
+import * as circleActions from './../../actions/circleActions'
+import * as imageGalleryActions from './../../actions/imageGalleryActions'
 
-import { itemsFetchData } from "../../actions";
-import datas from "./data.json";
+// - Import API 
+import CircleAPI from './../../api/CircleAPI'
+import PostAPI from './../../api/PostAPI'
 
+// - Import app components
+import WritePostButton from '../../components/WritePostButton';
+import Post from '../../components/Post';
+
+// - Import component styles 
 import styles from "./styles";
 
 const deviceWidth = Dimensions.get("window").width;
 const headerLogo = require("../../../assets/header-logo.png");
 
 class Home extends Component {
-  componentDidMount() {
-    this.props.fetchData(datas);
-  }
-  _renderItem = ({ item }) => {
-    return (
-      <Card>
-        <CardItem>
-          <Left>
-            <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
-            <Body>
-              <Text>Maxim Martynenko</Text>
-              <Text note>19 days ago | public</Text>
-            </Body>
-          </Left>
-        </CardItem>
-        <CardItem cardBody>
-          <Image source={require("../../../assets/live_user_tsm_daequan-400x225.jpg")} style={{ height: 200, width: null, flex: 1 }} />
-        </CardItem>
-        <CardItem>
-          <Body>
-            <Text>League of Legends</Text>
-          </Body>
-        </CardItem>
-        <CardItem>
-          <Left>
-            <TouchableOpacity onPress={() => { }}>
-              <Icon name="ios-heart-empty" style={styles.iconHeart} />
-            </TouchableOpacity>
-            <Text> 4 </Text>
 
-          </Left>
-          <Right style={{flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
-            <TouchableOpacity onPress={() => { }}>
-              <Icon name="ios-chatboxes" style={styles.iconHeart} />
-            </TouchableOpacity>
-            <Text style={{marginLeft: 10}}> 6 </Text>
-          </Right>
-        </CardItem>
-      </Card>
-    );
-  };
+  constructor(props) {
+    super(props)
+  }
+
+  componentWillMount() {
+    const { loadData } = this.props;
+    loadData();
+  }
+
+  componentDidMount() {
+  }
+
+  fetchPosts = () => {
+    const { mergedPosts } = this.props
+    const posts = PostAPI.sortObjectsDate(mergedPosts)
+    return _.map(posts, (post, index) => {
+
+      return <Post
+        body={post.body}
+        commentCounter={post.commentCounter}
+        creationDate={post.creationDate}
+        id={post.id}
+        key={post.id}
+        image={post.image}
+        lastEditDate={post.lastEditDate}
+        ownerDisplayName={post.ownerDisplayName}
+        ownerUserId={post.ownerUserId}
+        ownerAvatar={post.ownerAvatar}
+        postTypeId={post.postTypeId}
+        score={post.score}
+        tags={post.tags}
+        video={post.video}
+        disableComments={post.disableComments}
+        disableSharing={post.disableSharing}
+        viewCount={post.viewCount}
+        pictureState={true} />
+    })
+  }
+
   render() {
-    if (this.props.isLoading) {
+    const { loaded, navigation } = this.props
+    const { navigate } = navigation
+
+    if (!loaded) {
       return <Spinner />;
     } else {
       return (
@@ -89,7 +95,7 @@ class Home extends Component {
             <Left>
               <Button
                 transparent
-                onPress={() => this.props.navigation.openDrawer()}
+                onPress={() => navigation.openDrawer()}
               >
                 <Icon active name="menu" />
               </Button>
@@ -104,23 +110,10 @@ class Home extends Component {
             style={{ backgroundColor: "#fff" }}
           >
 
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('CreatePost')}>
-              <Card>
-                <CardItem>
-                  <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
-                  <Text note style={{ marginLeft: 20 }}>What's new with you?</Text>
-                  <Right>
-                    <Icon name="ios-camera" style={styles.iconCamera} />
-                  </Right>
-                </CardItem>
-              </Card>
-            </TouchableOpacity>
+            <WritePostButton openRequest={() => navigate('CreatePost')} />
 
-            <FlatList
-              data={this.props.items}
-              renderItem={this._renderItem}
-              keyExtractor={item => item.id}
-            />
+            {this.fetchPosts()}
+
           </Content>
         </Container>
       );
@@ -128,4 +121,56 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapDispatchToProps = (dispatch, ownProps) => {
+
+  return {
+    loadData: () => {
+      dispatch(commentActions.dbGetComments())
+      dispatch(imageGalleryActions.downloadForImageGallery())
+      dispatch(postActions.dbGetPosts())
+      dispatch(userActions.dbGetUserInfo())
+      dispatch(voteActions.dbGetVotes())
+      dispatch(notifyActions.dbGetNotifies())
+      dispatch(circleActions.dbGetCircles())
+
+    },
+    // clearData: () => {
+    //   dispatch(imageGalleryActions.clearAllData())
+    //   dispatch(postActions.clearAllData())
+    //   dispatch(userActions.clearAllData())
+    //   dispatch(commentActions.clearAllComments())
+    //   dispatch(voteActions.clearAllvotes())
+    //   dispatch(notifyActions.clearAllNotifications())
+    //   dispatch(circleActions.clearAllCircles())
+
+    // }
+  }
+}
+
+const mapStateToProps = ({ authorize, global, user, post, comment, imageGallery, vote, notify, circle }) => {
+  const { uid } = authorize
+  let mergedPosts = {}
+  const circles = circle ? (circle.userCircles[uid] || {}) : {}
+  const followingUsers = CircleAPI.getFollowingUsers(circles)
+  const posts = post.userPosts ? post.userPosts[uid] : {}
+  Object.keys(followingUsers).forEach((userId) => {
+    let newPosts = post.userPosts ? post.userPosts[userId] : {}
+    _.merge(mergedPosts, newPosts)
+  })
+  _.merge(mergedPosts, posts)
+  const loaded = user.loaded && post.loaded && comment.loaded && imageGallery.loaded && vote.loaded && notify.loaded && circle.loaded
+
+  return {
+    mergedPosts,
+    guest: authorize.guest,
+    name: user.info && user.info[uid] ? user.info[uid].fullName || '' : '',
+    avatar: user.info && user.info[uid] ? user.info[uid].avatar || '' : '',
+    authed: authorize.authed,
+    // progress: global.progress,
+    // global: global,
+    loaded,
+    uid
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
