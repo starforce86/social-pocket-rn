@@ -103,7 +103,6 @@ class Home extends Component {
             <Body>
               <Image source={headerLogo} style={styles.imageHeader} />
             </Body>
-            <Right />
           </Header>
           <Content
             showsVerticalScrollIndicator={false}
@@ -147,6 +146,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
+/**
+ * Map state to props
+ * @param {object} param0 
+ */
 const mapStateToProps = ({ authorize, global, user, post, comment, imageGallery, vote, notify, circle }) => {
   const { uid } = authorize
   let mergedPosts = {}
@@ -173,4 +176,7 @@ const mapStateToProps = ({ authorize, global, user, post, comment, imageGallery,
   }
 }
 
+/**
+ * Connect component to redux store
+ */
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

@@ -64,30 +64,30 @@ export const downloadForImageGallery = () => {
  * Save image URL in the server
  * @param  {string} imageURL is the URL of image
  */
-// export const dbSaveImage = (imageURL,imageFullPath) => {
-//   return (dispatch, getState) => {
+export const dbSaveImage = (imageURL,imageFullPath) => {
+  return (dispatch, getState) => {
 
-//     var uid = getState().authorize.uid
-//     var image = {
-//       creationDate: moment().unix(),
-//       deletationDate: '',
-//       URL: imageURL,
-//       fullPath:imageFullPath,
-//       ownerUserId: uid,
-//       lastEditDate: '',
-//       deleted: false
-//     }
+    var uid = getState().authorize.uid
+    var image = {
+      creationDate: moment().unix(),
+      deletationDate: '',
+      URL: imageURL,
+      fullPath:imageFullPath,
+      ownerUserId: uid,
+      lastEditDate: '',
+      deleted: false
+    }
 
-//     var imageRef = firebaseRef.child(`userFiles/${uid}/files/images`).push(image)
-//     return imageRef.then(() => {
-//       dispatch(addImage({
-//         ...image,
-//         id: imageRef.key
-//       }))
-//     })
+    var imageRef = firebaseRef.child(`userFiles/${uid}/files/images`).push(image)
+    return imageRef.then(() => {
+      dispatch(addImage({
+        ...image,
+        id: imageRef.key
+      }))
+    })
 
-//   }
-// }
+  }
+}
 
 /**
  * Delete an image from database
@@ -213,9 +213,9 @@ export const addImageList = (images) => {
  * Add image to image gallery
  * @param {object} image
  */
-// export const addImage = (image) => {
-//   return { type: types.ADD_IMAGE_GALLERY, image }
-// }
+export const addImage = (image) => {
+  return { type: types.ADD_IMAGE_GALLERY, image }
+}
 
 /**
  * Delete an image

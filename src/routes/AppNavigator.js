@@ -8,12 +8,14 @@ import ForgotPassword from "./../screens/ForgotPassword";
 import SignUp from "./../screens/SignUp/";
 import Home from "./../screens/Home/";
 import Sidebar from "./../screens/Sidebar";
+import CreatePost from "./../screens/CreatePost";
 import Feedback from "./../screens/Feedback/";
 import Profile from "./../screens/Profile/";
 
 const Drawer = createDrawerNavigator(
   {
     Home: { screen: Home },
+    CreatePost: { screen: CreatePost },
     Feedback: { screen: Feedback },
     Profile: { screen: Profile }
   },

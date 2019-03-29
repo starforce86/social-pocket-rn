@@ -160,13 +160,13 @@ class LoginForm extends Component {
                   name="email"
                   component={this.renderInput}
                   type="email"
-                  validate={[email, required]}
+                  // validate={[email, required]}
                 />
                 <Field
                   name="password"
                   component={this.renderInput}
                   type="password"
-                  validate={[alphaNumeric, minLength8, maxLength15, required]}
+                  // validate={[alphaNumeric, minLength8, maxLength15, required]}
                 />
 
                 {this.renderButton()}
@@ -208,8 +208,10 @@ let Login = reduxForm({
 
 const selector = formValueSelector('login');
 Login = connect(state => {
-  const email = selector(state, 'email');
-  const password = selector(state, 'password');
+  // const email = selector(state, 'email');
+  // const password = selector(state, 'password');
+  const email = "starforce86714@gmail.com";
+  const password = "12345678";
   return {
     email,
     password

@@ -6,18 +6,18 @@
  * @param {object} circles 
  * @param {string} followingId 
  */
-// export const getUserBelongCircles = (circles,followingId) => {
-//   let userBelongCircles = []
-//   Object.keys(circles).forEach((cid) => {
-//       if(cid.trim() !== '-Followers' && circles[cid].users){
-//           let isExist =  Object.keys(circles[cid].users).indexOf(followingId) > -1
-//           if(isExist){
-//               userBelongCircles.push(cid)
-//           }
-//       }
-//   })
-//   return userBelongCircles
-// }
+export const getUserBelongCircles = (circles,followingId) => {
+  let userBelongCircles = []
+  Object.keys(circles).forEach((cid) => {
+      if(cid.trim() !== '-Followers' && circles[cid].users){
+          let isExist =  Object.keys(circles[cid].users).indexOf(followingId) > -1
+          if(isExist){
+              userBelongCircles.push(cid)
+          }
+      }
+  })
+  return userBelongCircles
+}
 
 
 /**

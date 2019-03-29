@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import * as Animatable from 'react-native-animatable'
+import { TouchableOpacity, Image } from 'react-native'
 import {
   Text,
   Icon,
@@ -15,6 +16,10 @@ import {
 } from "native-base";
 
 // import CommentList from './../CommentList'
+
+// - Import component styles 
+import styles from './styles'
+
 
 export class Post extends Component {
 
@@ -131,7 +136,7 @@ export class Post extends Component {
             </Left>
           </CardItem>
           <CardItem cardBody>
-            <Image source={require("../../../assets/live_user_tsm_daequan-400x225.jpg")} style={{ height: 200, width: null, flex: 1 }} />
+            <Image source={{uri: image}} style={{ height: 200, width: null, flex: 1 }} />
           </CardItem>
           <CardItem>
             <Body>
@@ -143,14 +148,14 @@ export class Post extends Component {
               <TouchableOpacity onPress={() => { }}>
                 <Icon name="ios-heart-empty" style={styles.iconHeart} />
               </TouchableOpacity>
-              <Text> 4 </Text>
+              <Text> 0 </Text>
 
             </Left>
             <Right style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
               <TouchableOpacity onPress={() => { }}>
                 <Icon name="ios-chatboxes" style={styles.iconHeart} />
               </TouchableOpacity>
-              <Text style={{ marginLeft: 10 }}> 6 </Text>
+              <Text style={{ marginLeft: 10 }}> 0 </Text>
             </Right>
           </CardItem>
         </Card>
@@ -160,9 +165,9 @@ export class Post extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const {uid} = state.authorize  
+  const { uid } = state.authorize
   let votes = state.vote.postVotes[ownProps.id]
-  const post = (state.post.userPosts[uid] ? Object.keys(state.post.userPosts[uid]).filter((key)=>{ return ownProps.id === key}).length : 0)
+  const post = (state.post.userPosts[uid] ? Object.keys(state.post.userPosts[uid]).filter((key) => { return ownProps.id === key }).length : 0)
   const avatar = state.user.info && state.user.info[ownProps.ownerUserId] ? state.user.info[ownProps.ownerUserId].avatar || '' : ''
   const comments = state.comment.postComments ? state.comment.postComments[ownProps.id] : {}
   return {

@@ -20,44 +20,52 @@ import * as imageGalleryActions from './imageGalleryActions'
  * @param {object} newPost 
  * @param {function} callBack 
  */
-// export var dbAddPost = (newPost) => {
-//   return(dispatch,getState) => {
+export var dbAddPost = (newPost) => {
+  return (dispatch, getState) => {
 
-//     var uid = getState().authorize.uid
+    var uid = getState().authorize.uid
 
-//     var post = {
-//             postTypeId: 1,
-//             creationDate: moment().unix(),
-//             deletationDate: '',
-//             score: 0,
-//             viewCount: 0,
-//             body: newPost.body,
-//             ownerUserId: uid,
-//             ownerDisplayName: newPost.name,
-//             ownerAvatar: newPost.avatar,
-//             lastEditDate: '',
-//             tags: newPost.tags || [],
-//             commentCounter: 0,
-//             image: newPost.image || '',
-//             imageFullPath: newPost.imageFullPath || '',
-//             video:'',
-//             disableComments: newPost.disableComments,
-//             disableSharing: newPost.disableSharing,
-//             deleted:false
-//           }
+    var post = {
+      postTypeId: 1,
+      creationDate: moment().unix(),
+      deletationDate: '',
+      score: 0,
+      viewCount: 0,
+      body: newPost.body,
+      ownerUserId: uid,
+      ownerDisplayName: newPost.name,
+      ownerAvatar: newPost.avatar,
+      lastEditDate: '',
+      tags: newPost.tags || [],
+      commentCounter: 0,
+      image: newPost.image || '',
+      imageFullPath: newPost.imageFullPath || '',
+      video: '',
+      disableComments: newPost.disableComments,
+      disableSharing: newPost.disableSharing,
+      deleted: false
+    }
 
-//      var postRef = firebaseRef.child(`userPosts/${uid}/posts`).push(post)
-//      return postRef.then(()=>{
-//        dispatch(addPost(uid,{
-//          ...post,
-//          id: postRef.key
-//        }))
-//       dispatch(NavigationActions.back())
+    var postRef = firebaseRef.child(`userPosts/${uid}/posts`).push(post)
+    return postRef.then(() => {
+      dispatch(addPost(uid, {
+        ...post,
+        id: postRef.key
+      }))
+      dispatch(NavigationActions.back())
 
-//      },
-//      (error) => dispatch(globalActions.showErrorMessage(error.message)))
-//   }
-// }
+    },
+      (error) => {
+        //  dispatch(globalActions.showErrorMessage(error.message)) 
+        Toast.show({
+          text: error.message,
+          duration: 2500,
+          position: "top",
+          textStyle: { textAlign: "center" }
+        });
+      })
+  }
+}
 
 /**
  * Update a post from database

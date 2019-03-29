@@ -30,6 +30,5 @@ export default combineReducers({
   global: globalReducer,
   user: userReducer,
   notify: notifyReducer,
-  circle: circleReducer,
-  homeReducer
+  circle: circleReducer
 })

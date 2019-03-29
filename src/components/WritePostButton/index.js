@@ -32,17 +32,19 @@ export class WritePostButton extends Component {
   render() {
     const { avatar, openRequest } = this.props;
 
-    <TouchableOpacity onPress={openRequest}>
-      <Card>
-        <CardItem>
-          <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
-          <Text note style={{ marginLeft: 20 }}>What's new with you?</Text>
-          <Right>
-            <Icon name="ios-camera" style={styles.iconCamera} />
-          </Right>
-        </CardItem>
-      </Card>
-    </TouchableOpacity>
+    return (
+      <TouchableOpacity onPress={openRequest}>
+        <Card>
+          <CardItem>
+            <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
+            <Text note style={{ marginLeft: 20 }}>What's new with you?</Text>
+            <Right>
+              <Icon name="ios-camera" style={styles.iconCamera} />
+            </Right>
+          </CardItem>
+        </Card>
+      </TouchableOpacity>
+    );
   }
 
 }
