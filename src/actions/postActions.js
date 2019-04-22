@@ -1,5 +1,5 @@
 // - Import firebase component
-import firebase, {firebaseRef, storageRef} from '../firebase'
+import firebase, {firebaseRef, db, storageRef} from '../firebase'
 import { NavigationActions } from 'react-navigation'
 
 // - Import utility components
@@ -143,20 +143,86 @@ export var dbAddPost = (newPost) => {
    return (dispatch, getState) => {
      var uid = getState().authorize.uid
      if (uid) {
-       var postsRef = firebaseRef.child(`userPosts/${uid}/posts`);
+      //  var postsRef = firebaseRef.child(`userPosts/${uid}/posts`);
 
-       return postsRef.once('value').then((snapshot) => {
-         var posts = snapshot.val() || {};
-         var parsedPosts = {};
-         Object.keys(posts).forEach((postId) => {
-           parsedPosts[postId]={
-             id: postId,
-             ...posts[postId]
-           };
-         });
+      //  return postsRef.once('value').then((snapshot) => {
+      //    var posts = snapshot.val() || {};
+      //    var parsedPosts = {};
+      //    Object.keys(posts).forEach((postId) => {
+      //      parsedPosts[postId]={
+      //        id: postId,
+      //        ...posts[postId]
+      //      };
+      //    });
 
-         dispatch(addPosts(uid,parsedPosts));
-       });
+      //    dispatch(addPosts(uid,parsedPosts));
+      //  });
+      let postList = []
+      let tieFriends = []
+
+      // Get user ties
+      db.collection('graphs:friends').where('friendStatus', '==', 'accepted').where('leftNode', '==', uid)
+        .get().then((tieUsers1) => {
+          tieUsers1.forEach((item) => {
+            if (item.data().leftNode === uid) {
+              tieFriends.push(item.data().rightNode)
+            } else if (item.data().rightNode === uid) {
+              tieFriends.push(item.data().leftNode)
+            }
+          })
+          db.collection('graphs:friends').where('friendStatus', '==', 'accepted').where('rightNode', '==', uid)
+            .get().then((tieUsers2) => {
+              tieUsers2.forEach((item) => {
+                if (item.data().leftNode === uid) {
+                  tieFriends.push(item.data().rightNode)
+                } else if (item.data().rightNode === uid) {
+                  tieFriends.push(item.data().leftNode)
+                }
+              })
+
+              if (!(tieFriends.length > 0)) {
+                // Get current user posts
+                this.getPostsByUserId(uid).then((result) => {
+                  dispatch(addPosts(uid,result.posts));
+                })
+              }
+
+              let userCounter = 0
+                const userIdList = []
+                tieFriends.forEach((userId) => {
+                  if (!userIdList.includes(userId)) {
+    
+                  // Get user tie posts
+                    this.getPostsByUserId(userId).then((posts) => {
+                      userCounter++
+                      postList = [
+                        ...postList,
+                        ...posts.posts
+                      ]
+                      if (userCounter === tieFriends.length) {
+                      // Get current user posts
+                        this.getPostsByUserId(uid).then((result) => {
+                          postList = [
+                            ...postList,
+                            ...result.posts
+                          ]
+    
+                          dispatch(addPosts(uid,postList));
+                        })
+                      }
+                    })
+                  }
+                })
+            })
+        })
+        .catch((error) => {
+          Toast.show({
+            text: error.code,
+            duration: 2500,
+            position: "top",
+            textStyle: { textAlign: "center" }
+          });
+        })
 
      }
    }
@@ -210,7 +276,32 @@ export var dbAddPost = (newPost) => {
    }
  }
 
+  /**
+  *  Get all user posts from data base by user id
+  */
+ const getPostsByUserId = (userId) => {
+  return new Promise((resolve, reject) => {
+    let parsedData = []
 
+    let query = db.collection('posts').where('ownerUserId', '==', userId)
+    query.get().then((posts) => {
+      posts.forEach((postResult) => {
+        const post = postResult.data()
+        parsedData = [
+          ...parsedData,
+          {
+            [postResult.id]: {
+              id: postResult.id,
+              ...post
+            }
+          }
+
+        ]
+      })
+      resolve({ posts: parsedData })
+    })
+  })
+}
 
 
 

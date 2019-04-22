@@ -30,7 +30,7 @@ const maxLength = max => value =>
 const maxLength15 = maxLength(15);
 const minLength = min => value =>
   value && value.length < min ? `Must be ${min} characters or more` : undefined;
-const minLength8 = minLength(8);
+const minLength6 = minLength(6);
 const email = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "Invalid email address"
@@ -40,9 +40,7 @@ const alphaNumeric = value =>
     ? "Only alphanumeric characters"
     : undefined;
 
-declare type Any = any;
 class LoginForm extends Component {
-  textInput: Any;
 
   renderInput({ input, label, type, meta: { touched, error, warning } }) {
     return (
@@ -152,7 +150,8 @@ class LoginForm extends Component {
         <ImageBackground source={bg} style={styles.background}>
           <Content contentContainerStyle={{ flex: 1 }}>
             <View style={styles.container}>
-              <Image source={logo} style={styles.logo} />
+              {/* <Image source={logo} style={styles.logo} /> */}
+              <Text style={styles.appTitle}>Social Network</Text>
             </View>
             <View style={styles.container}>
               <View style={styles.form}>
@@ -166,7 +165,7 @@ class LoginForm extends Component {
                   name="password"
                   component={this.renderInput}
                   type="password"
-                  // validate={[alphaNumeric, minLength8, maxLength15, required]}
+                  // validate={[alphaNumeric, minLength6, maxLength15, required]}
                 />
 
                 {this.renderButton()}
@@ -211,7 +210,7 @@ Login = connect(state => {
   // const email = selector(state, 'email');
   // const password = selector(state, 'password');
   const email = "starforce86714@gmail.com";
-  const password = "12345678";
+  const password = "123456";
   return {
     email,
     password

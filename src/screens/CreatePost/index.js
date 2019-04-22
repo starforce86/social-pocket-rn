@@ -84,7 +84,6 @@ export class CreatePost extends Component {
    * @memberof CreatePost
    */
   changeText = (text) => {
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAA', text);
 
     const { navigation } = this.props
     navigation.setParams({ enableSavePost: false })

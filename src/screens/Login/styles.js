@@ -16,6 +16,13 @@ export default {
     flexDirection: "row",
     alignSelf: "center"
   },
+  appTitle: {
+    flex: 1,
+    alignSelf: "center",
+    color: "white",
+    fontSize: 36,
+    textAlign: "center"
+  },
   logo: {
     flex: 1,
     resizeMode: "contain",

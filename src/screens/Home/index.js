@@ -124,13 +124,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
   return {
     loadData: () => {
-      dispatch(commentActions.dbGetComments())
-      dispatch(imageGalleryActions.downloadForImageGallery())
+      // dispatch(commentActions.dbGetComments())
+      // dispatch(imageGalleryActions.downloadForImageGallery())
       dispatch(postActions.dbGetPosts())
-      dispatch(userActions.dbGetUserInfo())
-      dispatch(voteActions.dbGetVotes())
-      dispatch(notifyActions.dbGetNotifies())
-      dispatch(circleActions.dbGetCircles())
+      // dispatch(userActions.dbGetUserInfo())
+      // dispatch(voteActions.dbGetVotes())
+      // dispatch(notifyActions.dbGetNotifies())
+      // dispatch(circleActions.dbGetCircles())
 
     },
     // clearData: () => {
@@ -161,7 +161,8 @@ const mapStateToProps = ({ authorize, global, user, post, comment, imageGallery,
     _.merge(mergedPosts, newPosts)
   })
   _.merge(mergedPosts, posts)
-  const loaded = user.loaded && post.loaded && comment.loaded && imageGallery.loaded && vote.loaded && notify.loaded && circle.loaded
+  // const loaded = user.loaded && post.loaded && comment.loaded && imageGallery.loaded && vote.loaded && notify.loaded && circle.loaded
+  const loaded = post.loaded
 
   return {
     mergedPosts,
