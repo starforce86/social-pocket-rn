@@ -4,6 +4,14 @@ const {Dimensions, Platform} = React;
 const deviceWidth = Dimensions.get("window").width;
 
 export default {
+  spinnerContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center"
+  },
+  spinner: {
+    alignSelf: "center"
+  },
   newsContent: {
     flexDirection: "column",
     paddingTop: 20,

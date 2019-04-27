@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import { connect } from 'react-redux'
 import { ImageBackground, TouchableOpacity } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
@@ -13,6 +14,8 @@ import {
 } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 
+import UserAvatar from '../../components/UserAvatar'
+
 import styles from "./style";
 
 const resetAction = StackActions.reset({
@@ -23,6 +26,8 @@ const resetAction = StackActions.reset({
 class SideBar extends Component {
   render() {
     const navigation = this.props.navigation;
+    const { avatar, displayName } = this.props;
+
     return (
       <Container>
         <ImageBackground
@@ -103,7 +108,7 @@ class SideBar extends Component {
                       LOG OUT
                     </Text>
                     <Text note style={{ color: "#fff" }}>
-                      Kumar Sanket
+                      {displayName}
                     </Text>
                   </TouchableOpacity>
                 </Col>
@@ -114,10 +119,7 @@ class SideBar extends Component {
                       navigation.navigate("Profile");
                     }}
                   >
-                    <Thumbnail
-                      source={require("../../../assets/Contacts/sanket.png")}
-                      style={styles.profilePic}
-                    />
+                    <UserAvatar fullName={displayName} fileName={avatar} style={styles.profilePic} size={40} />
                   </TouchableOpacity>
                 </Col>
               </Grid>
@@ -129,4 +131,13 @@ class SideBar extends Component {
   }
 }
 
-export default SideBar;
+const mapStateToProps = (state, ownProps) => {
+  const { uid } = state.authorize
+  const avatar = state.user.info && state.user.info[uid] ? state.user.info[uid].avatar || '' : ''
+  return {
+    avatar,
+    displayName: state.user.info && state.user.info[uid] ? state.user.info[uid].fullName || '' : '',
+  }
+}
+
+export default connect(mapStateToProps)(SideBar);

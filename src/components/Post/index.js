@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import * as Animatable from 'react-native-animatable'
-import { TouchableOpacity, Image } from 'react-native'
+import { TouchableOpacity, Image, Dimensions } from 'react-native'
 import {
   Text,
   Icon,
@@ -14,12 +14,15 @@ import {
   CardItem,
   Thumbnail
 } from "native-base";
+import AutoHeightImage from 'react-native-auto-height-image';
 
 // import CommentList from './../CommentList'
+import UserAvatar from './../UserAvatar'
 
 // - Import component styles 
 import styles from './styles'
 
+const win = Dimensions.get('window');
 
 export class Post extends Component {
 
@@ -128,19 +131,19 @@ export class Post extends Component {
         <Card>
           <CardItem>
             <Left>
-              <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
+              <UserAvatar fullName={ownerDisplayName} fileName={avatar} />
               <Body>
-                <Text>{ownerDisplayName}</Text>
+                <Text note>{ownerDisplayName}</Text>
                 <Text note>{moment.unix(creationDate).fromNow()} | public</Text>
               </Body>
             </Left>
           </CardItem>
           <CardItem cardBody>
-            <Image source={{uri: image}} style={{ height: 200, width: null, flex: 1 }} />
+            <AutoHeightImage source={{uri: image}} width={win.width-4} />
           </CardItem>
           <CardItem>
             <Body>
-              <Text>{body}</Text>
+              <Text note>{body}</Text>
             </Body>
           </CardItem>
           <CardItem>
@@ -148,14 +151,13 @@ export class Post extends Component {
               <TouchableOpacity onPress={() => { }}>
                 <Icon name="ios-heart-empty" style={styles.iconHeart} />
               </TouchableOpacity>
-              <Text> 0 </Text>
-
+              <Text note> 0 </Text>
             </Left>
             <Right style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
               <TouchableOpacity onPress={() => { }}>
                 <Icon name="ios-chatboxes" style={styles.iconHeart} />
               </TouchableOpacity>
-              <Text style={{ marginLeft: 10 }}> 0 </Text>
+              <Text note style={{ marginLeft: 10 }}> 0 </Text>
             </Right>
           </CardItem>
         </Card>
@@ -166,9 +168,10 @@ export class Post extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { uid } = state.authorize
+  console.log('AAAAAAAAAAAAAAAAA', state)
   let votes = state.vote.postVotes[ownProps.id]
   const post = (state.post.userPosts[uid] ? Object.keys(state.post.userPosts[uid]).filter((key) => { return ownProps.id === key }).length : 0)
-  const avatar = state.user.info && state.user.info[ownProps.ownerUserId] ? state.user.info[ownProps.ownerUserId].avatar || '' : ''
+  const avatar = state.friend.allUsers && state.friend.allUsers[ownProps.ownerUserId] ? state.friend.allUsers[ownProps.ownerUserId].avatar || '' : ''
   const comments = state.comment.postComments ? state.comment.postComments[ownProps.id] : {}
   return {
     comments,
@@ -176,7 +179,8 @@ const mapStateToProps = (state, ownProps) => {
     commentCount: comments ? Object.keys(comments).length : 0,
     voteCount: state.vote.postVotes[ownProps.id] ? Object.keys(state.vote.postVotes[ownProps.id]).length : 0,
     userVoteStatus: votes && Object.keys(votes).filter((key) => votes[key].userId === state.authorize.uid)[0] ? true : false,
-    isPostOwner: post > 0
+    isPostOwner: post > 0,
+    ownerDisplayName: state.friend.allUsers && state.friend.allUsers[ownProps.ownerUserId] ? state.friend.allUsers[ownProps.ownerUserId].fullName || '' : '',
   }
 }
 

@@ -1,5 +1,5 @@
 // - Import react components
-import {firebaseRef} from '../firebase'
+import {firebaseRef, db} from '../firebase'
 
 // - Import action types
 import * as types from './../constants/actionTypes'
@@ -39,13 +39,17 @@ export const dbGetUserInfo = () => {
   return (dispatch, getState) => {
     var uid = getState().authorize.uid
     if (uid) {
-      var userInfoRef = firebaseRef.child(`users/${uid}/info`);
+      // var userInfoRef = firebaseRef.child(`users/${uid}/info`);
+      
+      // return userInfoRef.once('value').then((snapshot) => {
+      //   var userInfo = snapshot.val() || {};
+      //   dispatch(addUserInfo(uid,userInfo))
+      // },error => console.log(error));
 
-      return userInfoRef.once('value').then((snapshot) => {
-        var userInfo = snapshot.val() || {};
-        dispatch(addUserInfo(uid,userInfo))
-      },error => console.log(error));
-
+      return db.doc(`userInfo/${uid}`).get().then((result) => {
+        dispatch(addUserInfo(uid, result.data()))
+      })
+        .catch(error => console.log(error))
     }
   }
 }

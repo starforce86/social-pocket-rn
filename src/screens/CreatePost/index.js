@@ -35,6 +35,8 @@ import PostAPI from '../../api/PostAPI'
 import * as postActions from '../../actions/postActions'
 
 // Prepare Blob support
+export const tempWindowXMLHttpRequest = window.XMLHttpRequest;
+
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
@@ -282,7 +284,7 @@ export class CreatePost extends Component {
         >
 
           <View style={styles.headerContainer}>
-            <Thumbnail source={require("../../../assets/Contacts/atul.png")} style={{ alignSelf: "flex-start" }} />
+            <Thumbnail source={{uri: avatar}} style={{ alignSelf: "flex-start" }} />
             <Text style={{ color: "white", marginLeft: 20 }}>{name}</Text>
             <Text note style={{ color: "white" }}> | public</Text>
 

@@ -15,6 +15,7 @@ import {userReducer} from './userReducer'
 import {notifyReducer} from './notifyReducer'
 import {circleReducer} from './circleReducer'
 import {navReducer} from './navReducer'
+import { friendReducer } from './friendReducer';
 
 
 export default combineReducers({
@@ -30,5 +31,6 @@ export default combineReducers({
   global: globalReducer,
   user: userReducer,
   notify: notifyReducer,
-  circle: circleReducer
+  circle: circleReducer,
+  friend: friendReducer
 })

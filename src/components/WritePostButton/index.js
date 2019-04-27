@@ -14,6 +14,7 @@ import {
 } from "native-base";
 
 import styles from "./styles";
+import { UserAvatar } from '../UserAvatar';
 
 
 export class WritePostButton extends Component {
@@ -30,13 +31,13 @@ export class WritePostButton extends Component {
   }
 
   render() {
-    const { avatar, openRequest } = this.props;
+    const { avatar, displayName, openRequest } = this.props;
 
     return (
       <TouchableOpacity onPress={openRequest}>
         <Card>
           <CardItem>
-            <Thumbnail source={require("../../../assets/Contacts/atul.png")} />
+            <UserAvatar fullName={displayName} fileName={avatar} />
             <Text note style={{ marginLeft: 20 }}>What's new with you?</Text>
             <Right>
               <Icon name="ios-camera" style={styles.iconCamera} />
@@ -56,6 +57,7 @@ const mapStateToProps = ({ authorize, user }) => {
   return {
     // name: user.info && user.info[uid] ? user.info[uid].fullName || '' : '',
     avatar: user.info && user.info[uid] ? user.info[uid].avatar || '' : '',
+    displayName: user.info && user.info[uid] ? user.info[uid].fullName || '' : '',
     // authed: authorize.authed,
     // global: global,
     // uid

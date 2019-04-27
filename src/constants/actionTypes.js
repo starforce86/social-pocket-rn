@@ -50,6 +50,12 @@ export const OPEN_EDIT_PROFILE = 'OPEN_EDIT_PROFILE'
 export const CLOSE_EDIT_PROFILE = 'CLOSE_EDIT_PROFILE'
 export const ADD_PEOPLE_INFO = 'ADD_PEOPLE_INFO'
 
+/* friend action */
+export const CLEAR_ALL_DATA_FRIEND = 'CLEAR_ALL_DATA_FRIEND'
+export const ADD_FRIEND_TIE_LIST = 'ADD_FRIEND_TIE_LIST'
+export const ADD_FRIEND_REQUEST_LIST = 'ADD_FRIEND_REQUEST_LIST'
+export const ADD_ALL_USERS_LIST = 'ADD_ALL_USERS_LIST'
+
 /* circle actions */
 export const ADD_CIRCLE = 'ADD_CIRCLE'
 export const DELETE_CIRCLE = 'DELETE_CIRCLE'

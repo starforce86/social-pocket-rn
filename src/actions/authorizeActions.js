@@ -32,7 +32,7 @@ export var dbLogin = (email, password) => {
         position: "top",
         textStyle: { textAlign: "center" }
       });
-      dispatch(login(result.uid))
+      dispatch(login(result.user.uid))
 
       const resetAction = StackActions.reset({
         index: 0,
@@ -104,7 +104,7 @@ export var dbSignup = (user) => {
       textStyle: { textAlign: "center" }
     });
     return firebaseAuth().createUserWithEmailAndPassword(user.email, user.password).then((signupResult) => {
-      firebaseRef.child(`users/${signupResult.uid}/info`).set({
+      firebaseRef.child(`users/${signupResult.user.uid}/info`).set({
         ...user,
         avatar: 'noImage'
       }).then((result) => {
@@ -128,7 +128,7 @@ export var dbSignup = (user) => {
       })
 
       dispatch(signup({
-        uid: signupResult.uid,
+        uid: signupResult.user.uid,
         ...user
       }))
       const resetAction = StackActions.reset({

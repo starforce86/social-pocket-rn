@@ -12,6 +12,7 @@ import * as types from './../constants/actionTypes'
 import * as globalActions from './globalActions'
 import * as imageGalleryActions from './imageGalleryActions'
 
+import { tempWindowXMLHttpRequest } from '../screens/CreatePost'
 
 /* _____________ CRUD DB _____________ */
 
@@ -141,8 +142,11 @@ export var dbAddPost = (newPost) => {
   */
  export const dbGetPosts = () => {
    return (dispatch, getState) => {
+    
      var uid = getState().authorize.uid
      if (uid) {
+      const originalXMLHttpRequest = window.XMLHttpRequest
+      window.XMLHttpRequest = tempWindowXMLHttpRequest
       //  var postsRef = firebaseRef.child(`userPosts/${uid}/posts`);
 
       //  return postsRef.once('value').then((snapshot) => {
@@ -157,7 +161,7 @@ export var dbAddPost = (newPost) => {
 
       //    dispatch(addPosts(uid,parsedPosts));
       //  });
-      let postList = []
+      let postList = {}
       let tieFriends = []
 
       // Get user ties
@@ -182,8 +186,9 @@ export var dbAddPost = (newPost) => {
 
               if (!(tieFriends.length > 0)) {
                 // Get current user posts
-                this.getPostsByUserId(uid).then((result) => {
-                  dispatch(addPosts(uid,result.posts));
+                getPostsByUserId(uid).then((result) => {
+                  window.XMLHttpRequest = originalXMLHttpRequest
+                  return dispatch(addPosts(uid,result.posts))
                 })
               }
 
@@ -193,21 +198,21 @@ export var dbAddPost = (newPost) => {
                   if (!userIdList.includes(userId)) {
     
                   // Get user tie posts
-                    this.getPostsByUserId(userId).then((posts) => {
+                    getPostsByUserId(userId).then((posts) => {
                       userCounter++
-                      postList = [
+                      postList = {
                         ...postList,
                         ...posts.posts
-                      ]
+                      }
                       if (userCounter === tieFriends.length) {
                       // Get current user posts
-                        this.getPostsByUserId(uid).then((result) => {
-                          postList = [
+                        getPostsByUserId(uid).then((result) => {
+                          postList = {
                             ...postList,
                             ...result.posts
-                          ]
-    
-                          dispatch(addPosts(uid,postList));
+                          }
+                          window.XMLHttpRequest = originalXMLHttpRequest
+                          return dispatch(addPosts(uid,postList));
                         })
                       }
                     })
@@ -222,6 +227,7 @@ export var dbAddPost = (newPost) => {
             position: "top",
             textStyle: { textAlign: "center" }
           });
+          window.XMLHttpRequest = originalXMLHttpRequest
         })
 
      }
@@ -281,22 +287,18 @@ export var dbAddPost = (newPost) => {
   */
  const getPostsByUserId = (userId) => {
   return new Promise((resolve, reject) => {
-    let parsedData = []
+    let parsedData = {}
 
-    let query = db.collection('posts').where('ownerUserId', '==', userId)
-    query.get().then((posts) => {
+    db.collection('posts').where('ownerUserId', '==', userId).get().then((posts) => {
       posts.forEach((postResult) => {
         const post = postResult.data()
-        parsedData = [
+        parsedData = {
           ...parsedData,
-          {
-            [postResult.id]: {
-              id: postResult.id,
-              ...post
-            }
+          [postResult.id]: {
+            id: postResult.id,
+            ...post
           }
-
-        ]
+        }
       })
       resolve({ posts: parsedData })
     })
