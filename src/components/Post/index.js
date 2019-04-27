@@ -133,7 +133,7 @@ export class Post extends Component {
             <Left>
               <UserAvatar fullName={ownerDisplayName} fileName={avatar} />
               <Body>
-                <Text note>{ownerDisplayName}</Text>
+                <Text>{ownerDisplayName}</Text>
                 <Text note>{moment.unix(creationDate).fromNow()} | public</Text>
               </Body>
             </Left>
@@ -143,7 +143,7 @@ export class Post extends Component {
           </CardItem>
           <CardItem>
             <Body>
-              <Text note>{body}</Text>
+              <Text>{body}</Text>
             </Body>
           </CardItem>
           <CardItem>
@@ -151,13 +151,13 @@ export class Post extends Component {
               <TouchableOpacity onPress={() => { }}>
                 <Icon name="ios-heart-empty" style={styles.iconHeart} />
               </TouchableOpacity>
-              <Text note> 0 </Text>
+              <Text> 0 </Text>
             </Left>
             <Right style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
               <TouchableOpacity onPress={() => { }}>
                 <Icon name="ios-chatboxes" style={styles.iconHeart} />
               </TouchableOpacity>
-              <Text note style={{ marginLeft: 10 }}> 0 </Text>
+              <Text style={{ marginLeft: 10 }}> 0 </Text>
             </Right>
           </CardItem>
         </Card>
