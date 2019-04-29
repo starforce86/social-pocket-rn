@@ -26,12 +26,12 @@ export var dbLogin = (email, password) => {
       
     return firebaseAuth().signInWithEmailAndPassword(email, password).then((result) => {
       // dispatch(globalActions.showNotificationSuccess())
-      Toast.show({
-        text: "Your request has processed successfuly",
-        duration: 2500,
-        position: "top",
-        textStyle: { textAlign: "center" }
-      });
+      // Toast.show({
+      //   text: "Your request has processed successfuly",
+      //   duration: 2500,
+      //   position: "top",
+      //   textStyle: { textAlign: "center" }
+      // });
       dispatch(login(result.user.uid))
 
       const resetAction = StackActions.reset({

@@ -20,6 +20,7 @@ import moment from 'moment'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 import RNFetchBlob from 'react-native-fetch-blob'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // - Import component styles 
 import styles from './styles'
@@ -32,6 +33,7 @@ import PostAPI from '../../api/PostAPI'
 // import CommentList from './../CommentList'
 
 // - Import actions
+import * as imageGalleryActions from '../../actions/imageGalleryActions'
 import * as postActions from '../../actions/postActions'
 
 // Prepare Blob support
@@ -235,7 +237,7 @@ export class CreatePost extends Component {
           console.log(percent);
           console.log('====================================');
         }).then((result) => {
-        console.log(result);
+        console.log('CCCCCCCCCCCCCCCCCCCCCCCCC', result.downloadURL, result);
 
           /* Save post */
           post({
@@ -250,7 +252,7 @@ export class CreatePost extends Component {
           })
 
           /* Add image to image gallery */
-          saveImageGallery(result.downloadURL,result.metadata.fullPath)
+          // saveImageGallery(result.downloadURL,result.metadata.fullPath)
 
         })
 
@@ -273,7 +275,7 @@ export class CreatePost extends Component {
   }
 
   render() {
-    const { avatar, name, banner, navigation } = this.props
+    const { loading, avatar, name, banner, navigation } = this.props
     const { keyboardVisible, imageSource, imageHeight, text } = this.state
 
     return (
@@ -282,7 +284,9 @@ export class CreatePost extends Component {
           showsVerticalScrollIndicator={false}
           style={{ backgroundColor: "#fff" }}
         >
-
+          <Spinner
+            visible={loading}
+          />
           <View style={styles.headerContainer}>
             <Thumbnail source={{uri: avatar}} style={{ alignSelf: "flex-start" }} />
             <Text style={{ color: "white", marginLeft: 20 }}>{name}</Text>
@@ -371,6 +375,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
   const { uid } = state.authorize
   return {
+    loading: state.global.loading,
     avatar: state.user.info && state.user.info[uid] ? state.user.info[uid].avatar || '' : '',
     name: state.user.info && state.user.info[uid] ? state.user.info[uid].fullName || '' : '',
     banner: state.user.info && state.user.info[uid] ? state.user.info[uid].banner || '' : '',

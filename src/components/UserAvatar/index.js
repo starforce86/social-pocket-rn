@@ -47,11 +47,11 @@ export class UserAvatar extends Component {
     return (
       (fileName && fileName !== '' && fileName !== 'noImage')
         ? (
-          <Thumbnail source={{ uri: fileName ? fileName : ' ' }} style={{ ...style, backgroundColor: '#ffffff', width: size || 56, height: size || 56 }} />
+          <Thumbnail source={{ uri: fileName ? fileName : ' ' }} style={{ ...style, backgroundColor: '#ffffff', width: size || 46, height: size || 46 }} />
         )
         : (
-          <ImageBackground style={{ ...style, backgroundColor: '#00bcd4', borderRadius: size / 2 || 28, width: size || 56, height: size || 56 }} >
-            <Text style={{ color: 'white', fontSize: size / 2 || 28, textAlign: 'center', paddingTop: 6 }}>{fullName ? fullName.slice(0, 1) : ''}</Text>
+          <ImageBackground style={{ ...style, backgroundColor: '#00bcd4', borderRadius: size / 2 || 23, width: size || 46, height: size || 46 }} >
+            <Text style={{ color: 'white', fontSize: size / 2 || 23, textAlign: 'center', paddingTop: 5 }}>{fullName ? fullName.slice(0, 1) : ''}</Text>
           </ImageBackground>
         )
     );

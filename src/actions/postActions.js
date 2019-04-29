@@ -1,5 +1,5 @@
 // - Import firebase component
-import firebase, {firebaseRef, db, storageRef} from '../firebase'
+import firebase, { db, storageRef} from '../firebase'
 import { NavigationActions } from 'react-navigation'
 
 // - Import utility components
@@ -24,6 +24,7 @@ import { tempWindowXMLHttpRequest } from '../screens/CreatePost'
 export var dbAddPost = (newPost) => {
   return (dispatch, getState) => {
 
+    // dispatch(globalActions.showLoading())
     var uid = getState().authorize.uid
 
     var post = {
@@ -47,16 +48,21 @@ export var dbAddPost = (newPost) => {
       deleted: false
     }
 
-    var postRef = firebaseRef.child(`userPosts/${uid}/posts`).push(post)
-    return postRef.then(() => {
+    // var postRef = firebaseRef.child(`userPosts/${uid}/posts`).push(post)
+    var postRef = db.collection(`posts`).doc()
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAA', postRef.id, post)
+    return postRef.set({ ...post, id: postRef.id }).then(() => {
+      console.log('BBBBBBBBBBBBBBBBBBBBBBB')
       dispatch(addPost(uid, {
         ...post,
         id: postRef.key
       }))
+      dispatch(globalActions.hideLoading())
       dispatch(NavigationActions.back())
 
-    },
-      (error) => {
+    })
+      .catch((error) => {
+        dispatch(globalActions.hideLoading())
         //  dispatch(globalActions.showErrorMessage(error.message)) 
         Toast.show({
           text: error.message,
@@ -259,28 +265,28 @@ export var dbAddPost = (newPost) => {
  /**
   *  Get all user posts from data base by user id
   */
- export const dbGetPostsByUserId = (uid) => {
-   return (dispatch, getState) => {
+//  export const dbGetPostsByUserId = (uid) => {
+//    return (dispatch, getState) => {
    
-     if (uid) {
-       var postsRef = firebaseRef.child(`userPosts/${uid}/posts`);
+//      if (uid) {
+//        var postsRef = firebaseRef.child(`userPosts/${uid}/posts`);
 
-       return postsRef.once('value').then((snapshot) => {
-         var posts = snapshot.val() || {};
-         var parsedPosts = {};
-         Object.keys(posts).forEach((postId) => {
-           parsedPosts[postId]={
-             id: postId,
-             ...posts[postId]
-           };
-         });
+//        return postsRef.once('value').then((snapshot) => {
+//          var posts = snapshot.val() || {};
+//          var parsedPosts = {};
+//          Object.keys(posts).forEach((postId) => {
+//            parsedPosts[postId]={
+//              id: postId,
+//              ...posts[postId]
+//            };
+//          });
 
-         dispatch(addPosts(uid,parsedPosts));
-       });
+//          dispatch(addPosts(uid,parsedPosts));
+//        });
 
-     }
-   }
- }
+//      }
+//    }
+//  }
 
   /**
   *  Get all user posts from data base by user id

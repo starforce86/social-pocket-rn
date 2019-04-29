@@ -6,12 +6,12 @@ import {
 } from 'react-native'
 import {
   Text,
-  Icon,
   Right,
   Card,
   CardItem,
   Thumbnail
 } from "native-base";
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import styles from "./styles";
 import { UserAvatar } from '../UserAvatar';
@@ -40,7 +40,7 @@ export class WritePostButton extends Component {
             <UserAvatar fullName={displayName} fileName={avatar} />
             <Text note style={{ marginLeft: 20 }}>What's new with you?</Text>
             <Right>
-              <Icon name="ios-camera" style={styles.iconCamera} />
+              <Icon name="camera" style={styles.iconCamera} />
             </Right>
           </CardItem>
         </Card>

@@ -2,6 +2,9 @@
 const primary = require("../../../native-base-theme/variables/commonColor").brandPrimary;
 
 export default {
+  spinnerTextStyle: {
+    color: '#FFF'
+  },
   imageHeader: {
     height: 25,
     width: 95,

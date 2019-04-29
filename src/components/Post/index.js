@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import * as Animatable from 'react-native-animatable'
-import { TouchableOpacity, Image, Dimensions } from 'react-native'
+import { TouchableOpacity, Image, Dimensions, View } from 'react-native'
 import {
+  Button,
   Text,
-  Icon,
   Left,
   Body,
   Right,
@@ -14,6 +14,8 @@ import {
   CardItem,
   Thumbnail
 } from "native-base";
+import Icon from 'react-native-vector-icons/AntDesign';
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import AutoHeightImage from 'react-native-auto-height-image';
 
 // import CommentList from './../CommentList'
@@ -21,7 +23,6 @@ import UserAvatar from './../UserAvatar'
 
 // - Import component styles 
 import styles from './styles'
-
 const win = Dimensions.get('window');
 
 export class Post extends Component {
@@ -133,7 +134,7 @@ export class Post extends Component {
             <Left>
               <UserAvatar fullName={ownerDisplayName} fileName={avatar} />
               <Body>
-                <Text note>{ownerDisplayName}</Text>
+                <Text style={{paddingBottom: 4}}>{ownerDisplayName}</Text>
                 <Text note>{moment.unix(creationDate).fromNow()} | public</Text>
               </Body>
             </Left>
@@ -143,22 +144,70 @@ export class Post extends Component {
           </CardItem>
           <CardItem>
             <Body>
-              <Text note>{body}</Text>
+              <Text te>{body}</Text>
             </Body>
           </CardItem>
-          <CardItem>
-            <Left>
-              <TouchableOpacity onPress={() => { }}>
-                <Icon name="ios-heart-empty" style={styles.iconHeart} />
+          <CardItem style={{ flex: 1, justifyContent: 'space-around' }}>
+            {/* <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="hearto" style={styles.icon} />
               </TouchableOpacity>
-              <Text note> 0 </Text>
-            </Left>
-            <Right style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-              <TouchableOpacity onPress={() => { }}>
-                <Icon name="ios-chatboxes" style={styles.iconHeart} />
+              <Text style={styles.iconText}> 0 </Text>
+            </View> */}
+            <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="heart" style={styles.iconActive} />
               </TouchableOpacity>
-              <Text note style={{ marginLeft: 10 }}> 0 </Text>
-            </Right>
+              <Text style={styles.iconText}> 0 </Text>
+            </View>
+            {/* <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="smileo" style={styles.icon} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View> */}
+            <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="smile-circle" style={styles.iconActive} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View>
+            {/* <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="meh" style={styles.icon} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View> */}
+            <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="meho" style={styles.iconActive} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View>
+            {/* <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="frowno" style={styles.icon} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View> */}
+            <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Icon name="frown" style={styles.iconActive} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View>
+            {/* <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <AwesomeIcon name="comment-o" style={styles.icon} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View> */}
+            <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <AwesomeIcon name="comment" style={styles.iconActive} />
+              </TouchableOpacity>
+              <Text style={styles.iconText}> 0 </Text>
+            </View>
           </CardItem>
         </Card>
       </Animatable.View>
@@ -168,7 +217,6 @@ export class Post extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { uid } = state.authorize
-  console.log('AAAAAAAAAAAAAAAAA', state)
   let votes = state.vote.postVotes[ownProps.id]
   const post = (state.post.userPosts[uid] ? Object.keys(state.post.userPosts[uid]).filter((key) => { return ownProps.id === key }).length : 0)
   const avatar = state.friend.allUsers && state.friend.allUsers[ownProps.ownerUserId] ? state.friend.allUsers[ownProps.ownerUserId].avatar || '' : ''
