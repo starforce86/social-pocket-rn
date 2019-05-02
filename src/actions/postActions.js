@@ -1,5 +1,5 @@
 // - Import firebase component
-import firebase, { db, storageRef} from '../firebase'
+import firebase, { db, storageRef, RNFirestore } from '../firebase'
 import { NavigationActions } from 'react-navigation'
 
 // - Import utility components
@@ -24,7 +24,7 @@ import { tempWindowXMLHttpRequest } from '../screens/CreatePost'
 export var dbAddPost = (newPost) => {
   return (dispatch, getState) => {
 
-    // dispatch(globalActions.showLoading())
+    dispatch(globalActions.showLoading())
     var uid = getState().authorize.uid
 
     var post = {
@@ -49,13 +49,12 @@ export var dbAddPost = (newPost) => {
     }
 
     // var postRef = firebaseRef.child(`userPosts/${uid}/posts`).push(post)
-    var postRef = db.collection(`posts`).doc()
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAA', postRef.id, post)
+    // var postRef = db.collection(`posts`).doc()
+    var postRef = RNFirestore.collection(`posts`).doc()
     return postRef.set({ ...post, id: postRef.id }).then(() => {
-      console.log('BBBBBBBBBBBBBBBBBBBBBBB')
       dispatch(addPost(uid, {
         ...post,
-        id: postRef.key
+        id: postRef.id
       }))
       dispatch(globalActions.hideLoading())
       dispatch(NavigationActions.back())
@@ -63,7 +62,7 @@ export var dbAddPost = (newPost) => {
     })
       .catch((error) => {
         dispatch(globalActions.hideLoading())
-        //  dispatch(globalActions.showErrorMessage(error.message)) 
+        dispatch(globalActions.showErrorMessage(error.message))
         Toast.show({
           text: error.message,
           duration: 2500,

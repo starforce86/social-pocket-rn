@@ -2,6 +2,15 @@
 const primary = require("../../../native-base-theme/variables/commonColor").brandPrimary;
 
 export default {
+  headerStyle: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  headerIcons: {
+    fontSize: 30,
+    backgroundColor: "transparent",
+    color: "white"
+  },
   spinnerTextStyle: {
     color: '#FFF'
   },
@@ -15,7 +24,7 @@ export default {
     paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: "#01cca1",
+    // backgroundColor: "#01cca1",
     flexDirection: "row",
     alignItems: "center",
   },

@@ -33,8 +33,10 @@ const uploadImage = (file, fileName, progress) => {
         // Upload file
         var task = storegeFile.put(file)
         task.then((result) => {
-            console.log(result);
-            resolve(result)
+            storegeFile.getDownloadURL().then((url) => {
+                result.downloadURL = url
+                resolve(result)
+            })
         }).catch((error) => {
             reject(error)
         })

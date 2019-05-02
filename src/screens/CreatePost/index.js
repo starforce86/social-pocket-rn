@@ -5,7 +5,9 @@ import { Platform, ScrollView, TextInput, Image, TouchableOpacity, Keyboard, Key
 import {
   Container,
   Content,
+  Body,
   Button,
+  Header,
   Icon,
   Text,
   Item,
@@ -13,6 +15,7 @@ import {
   View,
   Thumbnail
 } from "native-base";
+import AntDIcon from 'react-native-vector-icons/AntDesign';
 import uuid from 'uuid'
 import _ from 'lodash'
 import { connect } from 'react-redux'
@@ -237,7 +240,6 @@ export class CreatePost extends Component {
           console.log(percent);
           console.log('====================================');
         }).then((result) => {
-        console.log('CCCCCCCCCCCCCCCCCCCCCCCCC', result.downloadURL, result);
 
           /* Save post */
           post({
@@ -280,22 +282,48 @@ export class CreatePost extends Component {
 
     return (
       <Container>
+        <Spinner
+          visible={loading}
+        />
+
+        <Header
+          style={styles.headerStyle}
+        >
+          <Body
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop:
+                Platform.OS === "ios" && (height === 812 || width === 812)
+                  ? 20
+                  : 0
+            }}
+          >
+            <Button transparent onPress={() => navigation.goBack()}>
+              <Icon active name="arrow-back" style={styles.headerIcons} />
+            </Button>
+            <Button
+              transparent
+              onPress={() => navigation.state.params.handleSavePost()}
+              disabled={imageHeight > 0 ? false : true}
+            >
+              <AntDIcon name="check" style={{...styles.headerIcons, marginRight: 10}} />
+            </Button>
+          </Body>
+        </Header>
         <Content
           showsVerticalScrollIndicator={false}
           style={{ backgroundColor: "#fff" }}
         >
-          <Spinner
-            visible={loading}
-          />
+          
           <View style={styles.headerContainer}>
             <Thumbnail source={{uri: avatar}} style={{ alignSelf: "flex-start" }} />
-            <Text style={{ color: "white", marginLeft: 20 }}>{name}</Text>
-            <Text note style={{ color: "white" }}> | public</Text>
-
+            <Text style={{ marginLeft: 20 }}>{name}</Text>
+            <Text note> | public</Text>
           </View>
 
           <View style={styles.contentContainer}>
-            <Item regular style={{ marginTop: 10 }}>
+            <Item regular>
               <Input
                 placeholder="What's new with you?"
                 placeholderTextColor="rgba(0,0,0,0.5)"
@@ -311,21 +339,6 @@ export class CreatePost extends Component {
                 onPress={this.showGallery}
               >
                 <Icon name="ios-camera" style={styles.iconCamera} />
-              </Button>
-            </View>
-            <View style={{ marginTop: 10, flexDirection: "row", justifyContent: "flex-end" }}>
-              <Button
-                style={{ height: 40 }}
-                onPress={() => navigation.goBack()}
-              >
-                <Text>Cancel</Text>
-              </Button>
-              <Button
-                style={{ marginLeft: 20, height: 40 }}
-                onPress={() => navigation.state.params.handleSavePost()}
-                disabled={imageHeight > 0 ? false : true}
-              >
-                <Text>Post</Text>
               </Button>
             </View>
             <View style={{ marginTop: 10, marginBottom: 20 }}>

@@ -28,7 +28,6 @@ export const dbGetAllUsers = () => {
                 result.forEach((item) => {
                     users[[item.data().id]] = item.data()
                 })
-                console.log('AAAAAAAAAAAAAAAAAAAA', users)
                 dispatch(addAllUsers(users))
             })
                 .catch(error => console.log(error))

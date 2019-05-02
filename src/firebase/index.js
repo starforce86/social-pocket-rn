@@ -4,6 +4,7 @@ import '@firebase/firestore'
 import '@firebase/database'
 import '@firebase/storage'
 import '@firebase/auth'
+import * as RNFirebase from 'react-native-firebase';
 
 try {
   let config = {
@@ -39,4 +40,5 @@ export let firebaseAuth = firebase.auth
 export let firebaseRef = firebase.database().ref()
 
 // - Firebase default
+export let RNFirestore = RNFirebase.firestore()
 export default firebase

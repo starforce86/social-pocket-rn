@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "512487036989",
+    "firebase_url": "https://maxim-react-social-network-upd.firebaseio.com",
+    "project_id": "maxim-react-social-network-upd",
+    "storage_bucket": "maxim-react-social-network-upd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512487036989:android:cfeb41356bc29c70",
+        "android_client_info": {
+          "package_name": "com.social_pocket_rn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512487036989-tnbnorr91d4k6is1nj3jm2rosnqj8f8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdxPskjqtnvhxt0X2qZYfG4FQ5UpQDDyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512487036989-tnbnorr91d4k6is1nj3jm2rosnqj8f8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
